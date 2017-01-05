@@ -1,86 +1,103 @@
-//shared constant variables
-global.canvas = document.getElementById("myCanvas");
-global.ctx = canvas.getContext("2d");
-global.paddleHeight = 50;
-global.paddleWidth = 10;
+import {canvas, ball, paddle1, paddleAI, bricks} from "./variables";
+import * as input from "./input";
+import * as score from "./score";
+import {paddleAIMovement} from "./AI";
 
-import * as input from "./player/input";
-
-//ball coordinates and velocity
-let x= canvas.width/2;
-let y= 0;
-let dx = 2;
-let dy = 2;
-//paddle position
-let paddleY = (canvas.height - paddleHeight) / 2;
-
-const brickHeight = 15;
-const brickWidth = 2;
-const brickPadding = 10;
-
+let scoreTracker = [0, 0];
 let roundStart = true;
-let score = [0, 0];
-
 
 function drawPaddle1() {
-    ctx.beginPath();
-    ctx.rect(10, paddleY, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#FFF";
-    ctx.fill();
-    ctx.closePath();
+    canvas.ctx.beginPath();
+    canvas.ctx.rect(paddle1.paddleLeftOffset, paddle1.y, paddle1.paddleWidth, paddle1.paddleHeight);
+    canvas.ctx.fillStyle = "#FFF";
+    canvas.ctx.fill();
+    canvas.ctx.closePath();
 }
 
 function drawPaddleAI() {
-    ctx.beginPath();
-    ctx.rect(canvas.width - paddleWidth - 10, (canvas.height - paddleHeight) / 2, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#FFF";
-    ctx.fill();
-    ctx.closePath();
+    canvas.ctx.beginPath();
+    canvas.ctx.rect(paddleAI.paddleRightOffset, paddleAI.y, paddleAI.paddleWidth, paddleAI.paddleHeight);
+    canvas.ctx.fillStyle = "#FFF";
+    canvas.ctx.fill();
+    canvas.ctx.closePath();
 }
 
 function drawCenterLine() {
     let i = 0;
     for(i; i<32; i++) {
-        let brickY = (i * (brickHeight + brickPadding)) + 5;
-        ctx.beginPath();
-        ctx.rect(canvas.width / 2, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = "#FFF";
-        ctx.fill();
-        ctx.closePath();
+        let brickY = (i * (bricks.brickHeight + bricks.brickPadding)) + 5;
+        canvas.ctx.beginPath();
+        canvas.ctx.rect(canvas.canvas.width / 2, brickY, bricks.brickWidth, bricks.brickHeight);
+        canvas.ctx.fillStyle = "#FFF";
+        canvas.ctx.fill();
+        canvas.ctx.closePath();
     }
 }
 
 function drawBall() {
-    ctx.beginPath();
-    ctx.rect(x, y, 8, 8);
-    ctx.fillStyle = "#FFF";
-    ctx.fill();
-    ctx.closePath();
+    canvas.ctx.beginPath();
+    canvas.ctx.rect(ball.x, ball.y, ball.squareBallLength, ball.squareBallLength);
+    canvas.ctx.fillStyle = "#FFF";
+    canvas.ctx.fill();
+    canvas.ctx.closePath();
 }
 
 function setupStartRound() {
-    y = (Math.random() * (canvas.height + 1));
+    ball.x = canvas.canvas.width/2;
+    ball.y = (Math.random() * (canvas.canvas.height + 1));
+    let xDirection = Math.random() < 0.5 ? 1 : -1;
+    let yDirection = Math.random() < 0.5 ? 1 : -1;
+    ball.dx *= xDirection;
+    ball.dy *= yDirection;
     roundStart = false;
 }
 
 const draw = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.ctx.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
     if (roundStart) setupStartRound();
     drawPaddle1();
     drawPaddleAI();
     drawCenterLine();
     drawBall();
-    if (input.checkDownPress(paddleY)) {
-        paddleY += 12;
+    score.drawScore(scoreTracker);
+
+    if (input.checkDownPress()) {
+        paddle1.y += 15;
     }
-    else if(input.checkUpPress(paddleY)) {
-        paddleY -= 12;
+    else if(input.checkUpPress()) {
+        paddle1.y -= 15;
     }
 
-    x += dx;
-    y += dy;
+    paddleAIMovement();
+
+    //top wall
+    if(ball.y + ball.dy > canvas.canvas.height- (ball.squareBallLength/2) || ball.y + ball.dy <  (ball.squareBallLength/2) ) {
+        ball.dy *= -1;
+    }
+
+    if(ball.x + ball.dx < ball.squareBallLength) {
+        if(ball.y > paddle1.y && ball.y < paddle1.y + paddle1.paddleHeight) {
+            ball.dx *= -1;
+        } else {
+            scoreTracker[1] += 1;
+            roundStart = true;
+        }
+    }
+
+    if(ball.x + ball.dx > canvas.canvas.width - ball.squareBallLength) {
+        if(ball.y > paddleAI.y && ball.y < paddleAI.y + paddleAI.paddleHeight) {
+            ball.dx *= -1;
+        } else {
+            scoreTracker[0] += 1;
+            roundStart = true;
+        }
+    }
+
+
+    ball.x += ball.dx;
+    ball.y += ball.dy;
     requestAnimationFrame(draw);
-}
+};
 
 document.addEventListener("keydown", input.keyDownHandler, false);
 document.addEventListener("keyup", input.keyUpHandler, false);
