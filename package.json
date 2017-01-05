@@ -23,6 +23,7 @@
     "browser-sync": "^2.18.5",
     "browserify": "^13.3.0",
     "del": "^2.2.2",
+    "eslint": "^3.12.2",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-rename": "^1.2.2",
