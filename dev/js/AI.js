@@ -1,4 +1,6 @@
-import {ball, canvas, paddleAI} from "./variables";
+import {ball} from "./map/Ball";
+import {canvas} from "./map/Canvas";
+import {paddleAI} from "./map/Paddle";
 
 let paddleAIMovement = () => {
     if (ball.dx < 0) {
@@ -8,7 +10,7 @@ let paddleAIMovement = () => {
             paddleAI.y -= 15;
         }
     } else {
-        paddleAI.y = ball.y * 1 - (paddleAI.paddleHeight/2);
+        paddleAI.y = ball.y * .8 - (paddleAI.paddleHeight/2);
     }
 };
 

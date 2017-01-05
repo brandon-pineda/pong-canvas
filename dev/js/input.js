@@ -1,4 +1,5 @@
-import {canvas, paddle1} from "./variables";
+import {canvas} from "./map/Canvas";
+import {paddle1} from "./map/Paddle";
 
 let upPressed = false;
 let downPressed = false;
@@ -19,8 +20,12 @@ const keyUpHandler = (e) => {
     }
 };
 
-const checkDownPress = () => {return downPressed && paddle1.y < canvas.canvas.height- paddle1.paddleHeight - 40;};
+const checkInput = () => {
+    if (downPressed && paddle1.y < canvas.canvas.height- paddle1.paddleHeight - 40) {
+        paddle1.y += 15;
+    } else if (upPressed && paddle1.y > 40) {
+        paddle1.y -= 15;
+    }
+};
 
-const checkUpPress = () => {return upPressed && paddle1.y > 40;};
-
-export {keyUpHandler, keyDownHandler, checkDownPress, checkUpPress};
+export {keyUpHandler, keyDownHandler, checkInput};
