@@ -7,6 +7,8 @@ let paddleAIMovement = () => {
         } else if (paddleAI.y > (canvas.canvas.height - paddleAI.paddleHeight) / 2) {
             paddleAI.y -= 15;
         }
+    } else {
+        paddleAI.y = ball.y * 1 - (paddleAI.paddleHeight/2);
     }
 };
 

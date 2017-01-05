@@ -84,7 +84,7 @@ const draw = () => {
         }
     }
 
-    if(ball.x + ball.dx > canvas.canvas.width - ball.squareBallLength) {
+    if(ball.x + ball.dx > canvas.canvas.width - (ball.squareBallLength * 1.5)) {
         if(ball.y > paddleAI.y && ball.y < paddleAI.y + paddleAI.paddleHeight) {
             ball.dx *= -1;
         } else {
