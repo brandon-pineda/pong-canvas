@@ -15,6 +15,13 @@ class Paddle {
         canvas.ctx.fill();
         canvas.ctx.closePath();
     }
+
+    reset(x) {
+        this.paddleHeight = 50;
+        this.paddleWidth = 10;
+        this.x = x;
+        this.y = (canvas.canvas.height - this.paddleHeight) / 2;
+    }
 }
 
 export let paddle1 = new Paddle(10);

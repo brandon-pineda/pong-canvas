@@ -16,6 +16,14 @@ class Ball {
         canvas.ctx.fill();
         canvas.ctx.closePath();
     }
+
+    reset() {
+        this.x= canvas.canvas.width/2;
+        this.y= 0;
+        this.dx = 1;
+        this.dy = 1;
+        this.squareBallLength = 8;
+    }
 }
 
 export let ball = new Ball();

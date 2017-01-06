@@ -8,6 +8,7 @@ import {score} from "./map/Score";
 import * as ai from "./AI";
 import {collision} from "./Collision";
 import * as input from "./input";
+import {initialize} from "./Initialize";
 
 const draw = () => {
     //clear screen
@@ -15,15 +16,19 @@ const draw = () => {
     // //check if new round, if so setup
     roundStart.setup();
     // //draw all elements
-    paddle1.draw();
-    paddleAI.draw();
     bricks.draw();
     ball.draw();
     score.draw();
-    // //check player inputs
-    input.checkInput();
-    // //ai movements
-    ai.paddleAIMovement();
+
+    if (!score.maxScoreReached()) {
+        paddle1.draw();
+        paddleAI.draw();
+        // //check player inputs
+        input.checkInput();
+        // //ai movements
+        ai.paddleAIMovement();
+
+    }
     // //check for ball collisions
     collision();
 
@@ -32,7 +37,6 @@ const draw = () => {
         requestAnimationFrame(draw);
         // Drawing code goes here
     }, 1000 / fps);
-    // requestAnimationFrame(draw);
 };
 
 document.addEventListener("keydown", input.keyDownHandler, false);

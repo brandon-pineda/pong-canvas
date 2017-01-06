@@ -21,10 +21,10 @@ const keyUpHandler = (e) => {
 };
 
 const checkInput = () => {
-    if (downPressed && paddle1.y < canvas.canvas.height- paddle1.paddleHeight - 40) {
-        paddle1.y += 15;
-    } else if (upPressed && paddle1.y > 40) {
-        paddle1.y -= 15;
+    if (downPressed && paddle1.y < canvas.canvas.height- paddle1.paddleHeight - 30) {
+        paddle1.y += 8;
+    } else if (upPressed && paddle1.y > 30) {
+        paddle1.y -= 8;
     }
 };
 

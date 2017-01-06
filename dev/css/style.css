@@ -1,12 +1,15 @@
 body {
   margin: 0;
   padding: 0; }
-
-canvas {
-  background: #000;
-  display: block;
-  left: 50%;
-  margin: 0 auto;
-  position: fixed;
-  top: 50%;
-  transform: translate(-50%, -50%); }
+  body div {
+    display: block;
+    left: 50%;
+    margin: 0 auto;
+    position: fixed;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%); }
+  body canvas {
+    background: #000; }
+  body p {
+    clear: both; }
